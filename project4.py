@@ -1,12 +1,11 @@
 import itertools
 from random import randint
-from itertools import chain
 from string import Formatter
 
 #Pakib itertool'sist saadud enniku lahti listiks.
 def pakkimine(tuubel):
     uuslist = []
-    uuslist = list(chain(*tuubel))
+    uuslist = list(itertools.chain(*tuubel))
     return uuslist
 #Loeb sisse tekstifaili ja saame sealt nimed ja tiimi overall'i
 def loefail(failinimi):
@@ -36,31 +35,35 @@ def skoorimine(tiim1, tiim2, sõnastik):
             skoor2 = randint(0,4)
     return skoor1, skoor2
 
+#Algab siit, kus kasutan funktsiooni, et saada kätte tiimid.
 tiim_sõnastik = loefail("tiimid.txt")
 print(tiim_sõnastik)
+
+#Siin tulevad vastasseisud
 paarid = list(itertools.combinations(loefail("tiimid.txt"), 2))
 print(paarid)
+#pakib ennikud lahti listiks.
 õhuke_paar = pakkimine(paarid)
-print(õhuke_paar)
+print()
 
 #Siit saame kätte skoorid.
 skoorid = []
 for i in range(0, len(õhuke_paar), 2):
     pakk = skoorimine(õhuke_paar[i], õhuke_paar[i+1], tiim_sõnastik)
     skoorid.append(pakk)
-print(skoorid)
-y = list(chain(*skoorid))
-print(y)
+#Pakime skoorid lahti listiks
+y = list(itertools.chain(*skoorid))
 
+#Sõnastikud
 punktid = {}
 löödud_väravad = {}
 lastud_väravad = {}
 vahe = {}
 
-#Siit saan punktid, löödud väravad, lastud väravad ja goal difference.
+#Siit saan punktid, löödud väravad, lastud väravad ja väravate vahe.
 for i in range(0, len(õhuke_paar), 2):
     if y[i] > y[i+1]:
-        print(õhuke_paar[i], "võitis", õhuke_paar[i+1]+"t", "kodus skooriga:","  ||", y[i],"-",y[i+1],"||")
+        print(õhuke_paar[i], "võitis", õhuke_paar[i+1]+"t", "kodus skooriga:".ljust(20)+"||", y[i],"-",y[i+1],"||")
         punktid[õhuke_paar[i]] = punktid.get(õhuke_paar[i], 0) + 3
         punktid[õhuke_paar[i+1]] = punktid.get(õhuke_paar[i+1], 0) + 0
         löödud_väravad[õhuke_paar[i]] = löödud_väravad.get(õhuke_paar[i], 0) + y[i]
@@ -70,7 +73,7 @@ for i in range(0, len(õhuke_paar), 2):
         vahe[õhuke_paar[i]] = vahe.get(õhuke_paar[i], 0) + y[i] - y[i+1]
         vahe[õhuke_paar[i+1]] = vahe.get(õhuke_paar[i+1], 0) + y[i+1] - y[i]
     elif y[i+1] > y[i]:
-        print(õhuke_paar[i+1], "võitis", õhuke_paar[i]+"t", "võõrsil skooriga:", " ||", y[i+1],"-",y[i],"||")
+        print(õhuke_paar[i+1], "võitis", õhuke_paar[i]+"t", "võõrsil skooriga:".ljust(20)+"||", y[i+1],"-",y[i],"||")
         punktid[õhuke_paar[i+1]] = punktid.get(õhuke_paar[i+1], 0) + 3
         punktid[õhuke_paar[i]] = punktid.get(õhuke_paar[i], 0) + 0
         löödud_väravad[õhuke_paar[i+1]] = löödud_väravad.get(õhuke_paar[i+1], 0) + y[i+1]
@@ -80,7 +83,7 @@ for i in range(0, len(õhuke_paar), 2):
         vahe[õhuke_paar[i]] = vahe.get(õhuke_paar[i], 0) + y[i] - y[i+1]
         vahe[õhuke_paar[i+1]] = vahe.get(õhuke_paar[i+1], 0) + y[i+1] - y[i]
     else:
-        print("Viik", õhuke_paar[i], "ja", õhuke_paar[i+1], "vahel, skoor:","    ||", y[i],"-",y[i+1],"||")
+        print("Viik", õhuke_paar[i], "ja", õhuke_paar[i+1], "vahel, skoor:".ljust(19)+"||", y[i],"-",y[i+1],"||")
         punktid[õhuke_paar[i+1]] = punktid.get(õhuke_paar[i], 0) + 1
         punktid[õhuke_paar[i]] = punktid.get(õhuke_paar[i], 0) + 1
         löödud_väravad[õhuke_paar[i+1]] = löödud_väravad.get(õhuke_paar[i+1], 0) + y[i+1]
@@ -90,12 +93,13 @@ for i in range(0, len(õhuke_paar), 2):
         vahe[õhuke_paar[i]] = vahe.get(õhuke_paar[i], 0) + y[i] - y[i+1]
         vahe[õhuke_paar[i+1]] = vahe.get(õhuke_paar[i+1], 0) + y[i+1] - y[i]
 
+print()
+
 print("Punktid: ")
 print(punktid)
 print("Löödud väravad: ")
 print(löödud_väravad)
 print("Lastud väravad: ")
 print(lastud_väravad)
-print("vahe")
+print("Väravate vahe: ")
 print(vahe)
-
