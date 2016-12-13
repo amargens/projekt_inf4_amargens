@@ -1,0 +1,4 @@
+Eesti:40
+Soome:50
+Rootsi:70
+Norra:55
