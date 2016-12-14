@@ -136,10 +136,11 @@ tühi_list.append(list_vahe)
 tühja_tuple = [tuple(l) for l in tühi_list]
 
 #-----------------Tabeli tegemine--------------------------
+laius = 200*len(võtmed)
 class AppBase:
     def __init__(self):
         self.mywin = tk.Tk()
-        self.mywin.geometry("%dx%d+%d+%d" % (1000, 105, 0, 350))
+        self.mywin.geometry("%dx%d+%d+%d" % (laius, 105, 0, 350))
         self.frame1 = tk.Frame(self.mywin)
         self.frame1.pack()
 
